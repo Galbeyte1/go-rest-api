@@ -1,67 +1,39 @@
 package comment
 
 import (
-	"context"
-	"errors"
-	"fmt"
+	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
-var (
-	ErrFetchingComment = errors.New("failed to fetch comment by ID")
-)
-
-// Comment - a representatoin of the comment
-//	structure for our service
-type Comment struct {
-	ID string
-	Slug string // A Slug is the unique identifying part of a web address, typically at the end of the URL
-	Body string
-	Author string
-}
-
-// Store - this interface defines all of the methods
-// that our service needs in order to operate
-type Store interface {
-	GetComment(context.Context, string) (Comment, error) 
-}
-
-
-// Define the service everyone will interact w/ 
-//	to add, delete etc comments
-// Service - is the struct on which all our logic
-//		will be built on top of
+// Service - the struct for our comment service
 type Service struct {
-	Store Store
+	DB *gorm.DB
 }
 
-// Constuctor fucntion for service, returning pointer to a service
-// Let it be known Go does not have the conecept of constructor function built in
-// NewService - returns a pointer to a new service
-// Follows the Go mantra of acceting an interface and returning struct
-func NewService(store Store) *Service {
+// Defines our comment structure
+type Comment struct {
+	gorm.Model 		// Tell GORM this will be structured in the DB
+	Slug string		// Represents the path where this comment is posted
+	Body string		// Conetent of the comment
+	Author string
+	CreatedAt time.Time
+}
+
+// CommentService - the interface for our comment service
+type CommentService interface{
+	GetComment(ID uint) (Comment, error)
+	GetCommentsBySlug(slug string) ([]Comment, error)
+	PostComment(comment Comment) (Comment, error)
+	UpdateComment(ID uint, newComment Comment) (Comment, error)
+	DeleteComment(ID uint) error
+	GetAllComments() ([]Comment, error)
+}
+
+// NewService - returns a new comment service
+func NewService(db *gorm.DB) *Service {
 	return &Service{
-		Store: store,
+		DB: db,
 	}
 }
 
-func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {
-	fmt.Println("retrieving a comment")
-	cmt, err := s.Store.GetComment(ctx, id)
-	if err != nil {
-		fmt.Println(err)
-		return Comment{}, ErrFetchingComment
-	}
-	return cmt, nil
-}
-
-func (s *Service) UpdateComment(ctx context.Context, cmt Comment) error {
-	return ErrNotImplemented
-}
-
-func (s *Service) DeleteComment(ctx context.Context, id string) error {
-	return ErrNotImplemented
-}
-
-func (s *Service) CreateComment(ctx context.Context, cmt Comment) (Comment, error) {
-	return Comment{}, ErrNotImplemented
-}
