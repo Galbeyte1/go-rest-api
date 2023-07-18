@@ -16,11 +16,17 @@ type App struct {}
 func (app *App) Run() error {
 	fmt.Println("Starting up Application")
 
+	var err error
+	fmt.Println("Instantiating Database")
 	db, err := database.NewDatabase()
 	if err != nil {
 		return err
 	}
-
+	fmt.Println("Migrating Database")
+	err = database.MigrateDB(db)
+	if err != nil {
+		return err
+	}
 	commentService := comment.NewService(db)
 
 	handler := transportHTTP.NewHandler(commentService)

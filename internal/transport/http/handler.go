@@ -75,9 +75,9 @@ func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		fmt.Fprintf(w, "%+v", comment)
+		fmt.Fprintf(w, "Failed to post comment")
 	}
-
+	fmt.Fprintf(w, "%+v", comment)
 }
 
 // UpdateComment - updates a comment by ID
