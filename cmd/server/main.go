@@ -1,16 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type App struct {}
 
 
-func Run() error {
-	fmt.Println("starting up our application")
+func (app *App) Run() error {
+	fmt.Println("Starting up Application")
 	return nil
 }
 
 func main() {
-	fmt.Println("Go REST API")
-	if err := Run(); err != nil {
+	fmt.Println("Welcome to Go REST API")
+	app := App{}
+	if err := app.Run(); err != nil {
+		fmt.Println("Error Starting up REST API")
 		fmt.Println(err)
 	}
 }
