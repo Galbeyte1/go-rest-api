@@ -1,4 +1,4 @@
-module github.com/Galbeyte1/rest-api
+module github.com/Galbeyte1/go-rest-api
 
 go 1.17
 

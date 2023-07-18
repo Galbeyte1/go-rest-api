@@ -21,6 +21,7 @@ func NewHandler() *Handler {
 func (h *Handler) SetupRoutes() {
 	fmt.Println("Setting Up Routes")
 	h.Router = mux.NewRouter()
+	// Health Check Endpoint
 	h.Router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "I am alive!")
 	})
