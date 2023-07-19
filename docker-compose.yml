@@ -25,7 +25,6 @@ services:
       DB_HOST: "db"
       DB_TABLE: "postgres"
       DB_PORT: "5432"
-      SSL_MODE: "disable"
     ports:
       - "8080:8080"
     depends_on:
@@ -33,9 +32,11 @@ services:
     networks:
       - fullstack
 
+#  Volume mappings 
 volumes:
   database_postgres:
 
+# Allows us to communicate to db and api
 networks:
   fullstack:
     driver: bridge

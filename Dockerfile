@@ -23,4 +23,7 @@ CMD ["./app"]
 # reduced resource usage from the first stage not necessary in second stage
 
 # docker build -t go-rest-api .
+
 # docker run go-rest-api   
+# or 
+# docker run -it -p 8080:8080 go-rest-api
