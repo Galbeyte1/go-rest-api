@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-api
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate # Ensureing no downtime
+    rollingUpdate:
+      maxSurge: 1 # Maximum number that can be scheduled above the maximum nm=umber of pods
+      maxUnavailable: 0 # Maximum number of pods that can be unavailable during the update
+  selector:
+    matchLabels:
+      app: comments-api
+  template:
+    metadata:
+      labels:
+        app: comments-api
+    spec:
+      containers:
+      - name: application
+        image: "galbeyte1/go-rest-api:latest"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+        env:
+          - name: DB_PORT
+            value: "$DB_PORT"
+          - name: DB_HOST
+            value: "$DB_HOST"
+          - name: DB_PASSWORD
+            value: "$DB_PASSWORD"
+          - name: DB_TABLE
+            value: "$DB_TABLE"
+          - name: DB_USERNAME
+            value: "$DB_USERNAME"
+

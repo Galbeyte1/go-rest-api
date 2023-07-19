@@ -17,6 +17,7 @@ services:
 
   api:
     build: .
+    image: go-rest-api
     container_name: "comments-rest-api"
     environment:
       DB_USERNAME: "postgres"
